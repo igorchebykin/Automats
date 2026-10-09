@@ -47,7 +47,7 @@ void ReadTransitions() {
         std::cout << "Введите вершины\n";
         int u, v;
         std::cin >> u >> v;
-        std::cout << "Введите слово\n";
+        std::cout << "Введите слово (epsilon = 1)\n";
         std::string s;
         std::cin >> s;
         g[u][v].insert(s);

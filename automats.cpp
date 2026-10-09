@@ -37,7 +37,7 @@ vector<vector<int>> Automat::EpsGraph() {
     for (int i = 0; i < static_cast<int>(state_number); ++i) {
         for (int j = 0; j < static_cast<int>(state_number); ++j) {
             for (auto e : g[i][j]) {
-                if (e == 'E' && check[i][j] == false) {
+                if (e == '1' && check[i][j] == false) {
                     eps_g[i].push_back(j);
                     check[i][j] = true;
                 }
@@ -76,7 +76,7 @@ void Automat::DeleteEpsilonEdge(int u, int v) {
     if (finish_points.count(v)) {
         finish_points.insert(u);
     }
-    g[u][v].erase('E');
+    g[u][v].erase('1');
     for (int i = 0; i < static_cast<int>(state_number); ++i) {
         for (auto e : g[v][i]) {
             g[u][i].insert(e);
@@ -214,7 +214,7 @@ std::set<int> Automat::GetClosure(const std::set<int>& states) const {
         q.pop();
 
         for (int v = 0; v < static_cast<int>(state_number); ++v) {
-            if (g[u][v].count('E') && closure.count(v) == 0) {
+            if (g[u][v].count('1') && closure.count(v) == 0) {
                 closure.insert(v);
                 q.push(v);
             }

@@ -84,8 +84,8 @@ TEST(EpsGraphTest, NoEpsilons) {
 TEST(EpsGraphTest, TwoEpsilons) {
     size_t n = 3;
     std::vector<std::vector<std::set<char>>> g(n, std::vector<std::set<char>>(n));
-    g[0][1].insert('E');
-    g[1][2].insert('E');
+    g[0][1].insert('1');
+    g[1][2].insert('1');
 
     Automat nfa(n, g, 0, {2}, {'a'});
     auto eps_g = nfa.EpsGraph();
@@ -98,9 +98,9 @@ TEST(EpsGraphTest, TwoEpsilons) {
 TEST(EpsGraphTest, Cycles) {
     size_t n = 3;
     std::vector<std::vector<std::set<char>>> g(n, std::vector<std::set<char>>(n));
-    g[0][1].insert('E');
-    g[1][0].insert('E');
-    g[2][2].insert('E');
+    g[0][1].insert('1');
+    g[1][0].insert('1');
+    g[2][2].insert('1');
 
     Automat nfa(n, g, 0, {1}, {'a'});
     auto eps_g = nfa.EpsGraph();
@@ -111,10 +111,10 @@ TEST(EpsGraphTest, Cycles) {
 TEST(NonEpsilonAutomatTest, TestEquivalence_1) {
     size_t n = 4;
     std::vector<std::vector<std::set<char>>> g(n, std::vector<std::set<char>>(n));
-    g[0][1].insert('E');
-    g[0][2].insert('E');
-    g[1][3].insert('E');
-    g[2][3].insert('E');
+    g[0][1].insert('1');
+    g[0][2].insert('1');
+    g[1][3].insert('1');
+    g[2][3].insert('1');
 
     g[1][1].insert('a');
     g[2][2].insert('b');
@@ -136,8 +136,8 @@ TEST(NonEpsilonAutomatTest, TestEquivalence_2) {
     size_t n = 4;
     std::vector<std::vector<std::set<char>>> g(n, std::vector<std::set<char>>(n));
     
-    g[0][1].insert('E');
-    g[1][0].insert('E');
+    g[0][1].insert('1');
+    g[1][0].insert('1');
     
     g[1][2].insert('a');
     g[2][3].insert('b');
@@ -156,10 +156,10 @@ TEST(NonEpsilonAutomatTest, TestEquivalence_2) {
 TEST(MakeDeterminedTest, TestEquivalence_1) {
     size_t n = 4;
     std::vector<std::vector<std::set<char>>> g(n, std::vector<std::set<char>>(n));
-    g[0][1].insert('E');
-    g[0][2].insert('E');
-    g[1][3].insert('E');
-    g[2][3].insert('E');
+    g[0][1].insert('1');
+    g[0][2].insert('1');
+    g[1][3].insert('1');
+    g[2][3].insert('1');
 
     g[1][1].insert('a');
     g[2][2].insert('b');
@@ -179,8 +179,8 @@ TEST(MakeDeterminedTest, TestEquivalence_2) {
     size_t n = 4;
     std::vector<std::vector<std::set<char>>> g(n, std::vector<std::set<char>>(n));
     
-    g[0][1].insert('E');
-    g[1][0].insert('E');
+    g[0][1].insert('1');
+    g[1][0].insert('1');
     
     g[1][2].insert('a');
     g[2][3].insert('b');
