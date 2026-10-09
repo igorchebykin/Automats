@@ -69,3 +69,28 @@ public:
 
     void Print() const;
 };
+
+class BadAutomat {
+public:
+    size_t state_number;
+    std::vector<std::vector<std::set<std::string>>> g;
+    int start_point;
+    std::set<int> finish_points;
+    vector<char> alphabet;
+
+public:
+    BadAutomat(size_t _state_number,
+               std::vector<std::vector<std::set<std::string>>> _g,
+               int _start_point,
+               std::set<int> _finish_points,
+               vector<char> _alphabet
+    );
+
+    Automat ToAutomat() const;
+
+    DeterminedAutomat MakeDetermined() const;
+
+    bool CheckWord(const std::string& word) const;
+
+    void Print() const;
+};

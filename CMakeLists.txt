@@ -14,14 +14,34 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+add_executable(main_app
+    main.cpp
+    automats.cpp
+    condensation.cpp
+)
+target_include_directories(main_app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(unit_tests
     tests.cpp
     automats.cpp
     condensation.cpp
 )
-
 target_include_directories(unit_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(unit_tests PRIVATE gtest_main)
 
 include(GoogleTest)
 gtest_discover_tests(unit_tests)
+
+add_custom_target(run_tests
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+    DEPENDS unit_tests
+    USES_TERMINAL
+    VERBATIM
+)
+
+add_custom_target(run_main
+    COMMAND $<TARGET_FILE:main_app>
+    DEPENDS main_app
+    USES_TERMINAL
+    VERBATIM
+)

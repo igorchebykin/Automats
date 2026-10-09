@@ -275,7 +275,7 @@ void DeterminedAutomat::Print() const {
 }
 
 void Automat::Print() const {
-    std::cout << "===== ИНФОРМАЦИЯ О НКА =====" << "\n";
+    std::cout << "===== ИНФОРМАЦИЯ О НКА0-1 =====" << "\n";
     std::cout << "Количество состояний: " << state_number << "\n";
     std::cout << "Стартовое состояние: " << start_point << "\n";
 
@@ -305,4 +305,106 @@ void Automat::Print() const {
         std::cout << "  (Переходы отсутствуют)" << "\n";
     }
     std::cout << "============================" << "\n";
+}
+
+BadAutomat::BadAutomat(
+    size_t _state_number,
+    std::vector<std::vector<std::set<std::string>>> _g,
+    int _start_point,
+    std::set<int> _finish_points,
+    vector<char> _alphabet
+) {
+    state_number = _state_number;
+    g = _g;
+    start_point = _start_point;
+    finish_points = _finish_points;
+    alphabet = _alphabet;
+}
+
+Automat BadAutomat::ToAutomat() const {
+    int new_state_count = static_cast<int>(state_number);
+    vector<vector<std::set<char>>> new_g;
+
+    struct Chain {
+        int u;
+        int v;
+        std::string s;
+    };
+    vector<Chain> chains;
+
+    for (int i = 0; i < static_cast<int>(state_number); ++i) {
+        for (int j = 0; j < static_cast<int>(state_number); ++j) {
+            for (const auto& s : g[i][j]) {
+                if (s.empty()) {
+                    continue;
+                }
+                if (s.size() == 1) {
+                    chains.push_back({i, j, s});
+                } else {
+                    int prev = i;
+                    for (size_t k = 0; k + 1 < s.size(); ++k) {
+                        int mid = new_state_count++;
+                        chains.push_back({prev, mid, std::string(1, s[k])});
+                        prev = mid;
+                    }
+                    chains.push_back({prev, j, std::string(1, s.back())});
+                }
+            }
+        }
+    }
+
+    new_g.assign(new_state_count,
+                 vector<std::set<char>>(new_state_count));
+
+    for (const auto& c : chains) {
+        new_g[c.u][c.v].insert(c.s[0]);
+    }
+
+    return Automat(
+        static_cast<size_t>(new_state_count),
+        new_g,
+        start_point,
+        finish_points,
+        alphabet
+    );
+}
+
+DeterminedAutomat BadAutomat::MakeDetermined() const {
+    Automat nka = ToAutomat();
+    return nka.MakeDetermined();
+}
+
+void BadAutomat::Print() const {
+    std::cout << "===== ИНФОРМАЦИЯ О НКА =====" << "\n";
+    std::cout << "Количество состояний: " << state_number << "\n";
+    std::cout << "Стартовое состояние: " << start_point << "\n";
+
+    std::cout << "Финальные состояния: { ";
+    for (int finish : finish_points) {
+        std::cout << finish << " ";
+    }
+    std::cout << "}" << "\n";
+
+    std::cout << "Список переходов:" << "\n";
+    bool has_transitions = false;
+
+    for (size_t u = 0; u < state_number; ++u) {
+        for (size_t v = 0; v < state_number; ++v) {
+            if (!g[u][v].empty()) {
+                has_transitions = true;
+                std::cout << "  Состояние " << u
+                          << " -> Состояние " << v
+                          << " по строкам: { ";
+                for (const auto& s : g[u][v]) {
+                    std::cout << "\"" << s << "\" ";
+                }
+                std::cout << "}" << "\n";
+            }
+        }
+    }
+
+    if (!has_transitions) {
+        std::cout << "  (Переходы отсутствуют)" << "\n";
+    }
+    std::cout << "==============================================" << "\n";
 }
