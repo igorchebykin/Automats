@@ -249,7 +249,13 @@ bool Automat::CheckWord(const std::string& word) const {
 
 void DeterminedAutomat::Print() const {
     std::cout << "===== ИНФОРМАЦИЯ О ДКА =====" << "\n";
-    std::cout << "Всего состояний: " << state_number << "\n";
+    int non_empty_states = 0;
+    for (auto [e, m] : g) {
+        if (!m.empty()) {
+            ++non_empty_states;
+        }
+    }
+    std::cout << "Всего состояний: " << non_empty_states << "\n";
     std::cout << "Стартовое состояние: " << start_point << "\n";
 
     std::cout << "Финальные состояния: ";
