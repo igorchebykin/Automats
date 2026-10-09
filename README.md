@@ -8,6 +8,7 @@
 
 Запуск:
 cmake -S . -B build
+
 cmake --build build
 
 Для запуска тестов:
