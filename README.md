@@ -6,6 +6,10 @@
 
  DeterminedAutomat - ДКА
 
+EPSILON = 1
+
+1 не может быть в алфавите
+
 Запуск:
 cmake -S . -B build
 
