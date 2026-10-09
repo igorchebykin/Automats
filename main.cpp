@@ -62,4 +62,15 @@ int main() {
     BadAutomat bad_auto(state_number, g, start_point, finish_points, alphabet);
     DeterminedAutomat det = bad_auto.MakeDetermined();
     det.Print();
+    std::cout << std::endl;
+    std::cout << "Сколько слов хотите чекнуть?\n";
+    int word_count;
+    std::cin >> word_count;
+    while (word_count--) {
+        std::cout << "Введите слово:\n";
+        std::string w;
+        std::cin >> w;
+        std::cout << (det.CheckWord(w) ? "True" : "False");
+        std::cout << std::endl;
+    }
 }
