@@ -1,6 +1,7 @@
+#include "condensation.hpp"
+
 #include <iostream>
 #include <vector>
-#include "condensation.hpp"
 
 using std::vector;
 
@@ -26,35 +27,35 @@ void DfsForComponents(int v, int color, vector<vector<int>>& graph,
 }
 
 vector<int> Condensation(vector<vector<int>> graph) {
-    int n = graph.size();
-    int m = 0;
-    vector<vector<int>> reversed_graph(n, vector<int>());
-    for (int i = 0; i < n; ++i) {
-        for (int e : graph[i]) {
-            ++m;
-            reversed_graph[e].push_back(i);
-        }
+  int n = graph.size();
+  int m = 0;
+  vector<vector<int>> reversed_graph(n, vector<int>());
+  for (int i = 0; i < n; ++i) {
+    for (int e : graph[i]) {
+      ++m;
+      reversed_graph[e].push_back(i);
     }
-    vector<int> used(n, 0);
-    vector<int> answer;
+  }
+  vector<int> used(n, 0);
+  vector<int> answer;
 
-    for (int i = 0; i < n; ++i) {
-        if (used[i] == 0) {
-            DfsForOrder(i, reversed_graph, answer, used);
-        }
+  for (int i = 0; i < n; ++i) {
+    if (used[i] == 0) {
+      DfsForOrder(i, reversed_graph, answer, used);
     }
-    used.assign(n, -1);
-    int color = 0;
-    for (int i = static_cast<int>(answer.size() - 1); i >= 0; --i) {
-        int e = answer[i];
-        if (used[e] == -1) {
-            DfsForComponents(e, color, graph, used);
-            ++color;
-        }
+  }
+  used.assign(n, -1);
+  int color = 0;
+  for (int i = static_cast<int>(answer.size() - 1); i >= 0; --i) {
+    int e = answer[i];
+    if (used[e] == -1) {
+      DfsForComponents(e, color, graph, used);
+      ++color;
     }
-    vector<int> solution(n, 0);
-    for (int i = 0; i < n; ++i) {
-        solution[i] = color - used[i] - 1;
-    }
-    return solution;
+  }
+  vector<int> solution(n, 0);
+  for (int i = 0; i < n; ++i) {
+    solution[i] = color - used[i] - 1;
+  }
+  return solution;
 }

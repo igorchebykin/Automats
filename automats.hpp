@@ -1,96 +1,90 @@
 #pragma once
 
-#include <vector>
-#include <set>
+#include <algorithm>
+#include <cassert>
+#include <cstddef>
 #include <map>
 #include <queue>
-#include <algorithm>
-#include <cstddef>
+#include <set>
+#include <vector>
 
 #include "condensation.hpp"
 
 using std::vector;
 
-class DeterminedAutomat {   
-public:
-    size_t state_number;
-    std::map<int, std::map<char, int>> g;
-    int start_point;
-    std::set<int> finish_points;
-    vector<char> alphabet;
+class DeterminedAutomat {
+ public:
+  size_t state_number;
+  std::map<int, std::map<char, int>> g;
+  int start_point;
+  std::set<int> finish_points;
+  vector<char> alphabet;
 
-public:
-    DeterminedAutomat(size_t _state_number,
-                      std::map<int, std::map<char, int>> _g,
-                      int _start_point,
-                      std::set<int> _finish_points,
-                      vector<char> _alphabet);
-    
-    bool CheckWord(const std::string& word) const;
-    void Print() const;
+ public:
+  DeterminedAutomat(size_t _state_number, std::map<int, std::map<char, int>> _g,
+                    int _start_point, std::set<int> _finish_points,
+                    vector<char> _alphabet);
+
+  bool CheckWord(const std::string& word) const;
+  void Print() const;
 };
 
 class Automat {
-public:
-    size_t state_number;
-    std::vector<std::vector<std::set<char>>> g;
-    int start_point;
-    std::set<int> finish_points;
-    vector<char> alphabet;
+ public:
+  size_t state_number;
+  std::vector<std::vector<std::set<char>>> g;
+  int start_point;
+  std::set<int> finish_points;
+  vector<char> alphabet;
 
-    std::vector<std::vector<int>> EpsGraph();
+  std::vector<std::vector<int>> EpsGraph();
 
-    void DeleteEpsCircles();
+  void DeleteEpsCircles();
 
-    void DeleteEpsilonEdge(int u, int v);
+  void DeleteEpsilonEdge(int u, int v);
 
-    void EpsDfs(int s, vector<bool>& check,
-                std::vector<std::vector<int>>& epsilon_g);
+  void EpsDfs(int s, vector<bool>& check,
+              std::vector<std::vector<int>>& epsilon_g);
 
-    void DeleteAllEpsilons();
+  void DeleteAllEpsilons();
 
-    vector<std::map<char, int>> AllDestinations();
+  vector<std::map<char, int>> AllDestinations();
 
-    bool ISNewFinish(int v);
+  bool ISNewFinish(int v);
 
-    std::set<int> GetClosure(const std::set<int>& states) const;
+  std::set<int> GetClosure(const std::set<int>& states) const;
 
-public:
-    Automat(size_t _state_number,
-            std::vector<std::vector<std::set<char>>> _g,
-            int _start_point,
-            std::set<int> _finish_points,
-            vector<char> _alphabet
-    );
+ public:
+  Automat(size_t _state_number, std::vector<std::vector<std::set<char>>> _g,
+          int _start_point, std::set<int> _finish_points,
+          vector<char> _alphabet);
 
-    DeterminedAutomat MakeDetermined();
+  DeterminedAutomat MakeDetermined();
 
-    bool CheckWord(const std::string& word) const;
+  bool CheckWord(const std::string& word) const;
 
-    void Print() const;
+  void Print() const;
 };
 
 class BadAutomat {
-public:
-    size_t state_number;
-    std::vector<std::vector<std::set<std::string>>> g;
-    int start_point;
-    std::set<int> finish_points;
-    vector<char> alphabet;
+ public:
+  size_t state_number;
+  std::vector<std::vector<std::set<std::string>>> g;
+  int start_point;
+  std::set<int> finish_points;
+  vector<char> alphabet;
 
-public:
-    BadAutomat(size_t _state_number,
-               std::vector<std::vector<std::set<std::string>>> _g,
-               int _start_point,
-               std::set<int> _finish_points,
-               vector<char> _alphabet
-    );
+ public:
+  BadAutomat(size_t _state_number,
+             std::vector<std::vector<std::set<std::string>>> _g,
+             int _start_point, std::set<int> _finish_points,
+             vector<char> _alphabet);
 
-    Automat ToAutomat() const;
+  Automat ToAutomat() const;
 
-    DeterminedAutomat MakeDetermined() const;
+  DeterminedAutomat MakeDetermined() const;
 
-    bool CheckWord(const std::string& word) const;
+  bool CheckWord(const std::string& word) const;
 
-    void Print() const;
+  void Print() const;
 };
